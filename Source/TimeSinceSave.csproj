@@ -5,17 +5,10 @@
     <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
 
-  <!-- Path to copy the final DLL to -->
-  <PropertyGroup>
-    <RimWorldModsAssemblies>E:\SteamLibrary\steamapps\common\RimWorld\Mods\Time Since Save\Assemblies\</RimWorldModsAssemblies>
-  </PropertyGroup>
+	<Target Name="CopyToRimWorldAssemblies" AfterTargets="Build">
+		<Exec Command='powershell -ExecutionPolicy Bypass -NoProfile -File "$(ProjectDir)Deploy-RimWorldMod.ps1" -SourceDll "$(TargetPath)" -ModName "$(AssemblyName)"' />
+	</Target>
 
-  <!-- Copy the built DLL to the RimWorld Mods Assemblies folder after build -->
-  <Target Name="CopyToRimWorldAssemblies" AfterTargets="Build">
-    <Message Text="Copying $(TargetPath) to $(RimWorldModsAssemblies)" Importance="High" />
-    <MakeDir Directories="$(RimWorldModsAssemblies)" Condition="!Exists('$(RimWorldModsAssemblies)')" />
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(RimWorldModsAssemblies)" SkipUnchangedFiles="true" />
-  </Target>
   <ItemGroup>
     <Reference Include="0Harmony">
       <HintPath>E:\SteamLibrary\steamapps\workshop\content\294100\2009463077\1.6\Assemblies\0Harmony.dll</HintPath>
